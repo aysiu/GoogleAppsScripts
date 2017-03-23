@@ -108,14 +108,19 @@ function findUsersWithoutGroups(){
    // End looping through current years
    }
   
-  // Construct email to send
+   // Construct email to send
   var recipients="FIRSTPERSON@YOURDOMAIN.COM, SECONDPERSON@YOURDOMAIN.COM";
   var subject='Students unsubscribed from mailing lists';
-  var body='The following students are not subscribed to their class mailing lists: ';
+  var students='';
   for (i=0; i<useremails.length; i++){
-    body+=useremails[i] + ' ';
+    students+=useremails[i] + ' ';
   }
-  MailApp.sendEmail(recipients, subject, body);
+  if (students==''){
+    var body='All students are in their respective mailing lists';
+  } else {
+    var body='The following students are not subscribed to their class mailing lists: ' + students;
+  }
+    MailApp.sendEmail(recipients, subject, body);
   
  // End of function
  }
