@@ -2,6 +2,8 @@ function findUsersWithoutGroups(){
   // In theory, there are simpler ways to do this (for example, instead of creating a separate list of all the students in
   // a group, you could just  if (!grouplist.hasUser(email)) except that if you do that, Google errors out with
   // "Service invoked too many times in a short time: groups read. Try Utilities.sleep(1000) between calls."
+  // I also didn't find any API resources (and couldn't figure out based on trial and error) how to combine
+  // query items, so that's why I do a separate query for suspended users and then all users for the OU
   // There are lots of great in theory ways to approach this. This script actually works, though. Obviously,
   // you may have to adjust some of this logic to fit your school's organization, but the framework is there...  
   
