@@ -4,6 +4,8 @@ function findUsersWithoutGroups(){
   // "Service invoked too many times in a short time: groups read. Try Utilities.sleep(1000) between calls."
   // I also didn't find any API resources (and couldn't figure out based on trial and error) how to combine
   // query items, so that's why I do a separate query for suspended users and then all users for the OU
+  // Also fully aware of https://developers.google.com/apps-script/advanced/admin-sdk-directory#add_group_member
+  // But I couldn't get it to work reliably
   // There are lots of great in theory ways to approach this. This script actually works, though. Obviously,
   // you may have to adjust some of this logic to fit your school's organization, but the framework is there...  
   
