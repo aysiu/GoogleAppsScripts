@@ -31,27 +31,6 @@ function findUsersWithoutGroups(){
       currentyears.push(tempyear.toString());
    }
   
-     // Let's get just the suspended accounts
-  var suspendedusers=[];
-   var optionalArgs = {
-      domain: 'YOURDOMAIN.COM',
-      maxResults: 500,
-      orderBy: 'email',
-      query: 'isSuspended=true'
-   };
-   var response = AdminDirectory.Users.list(optionalArgs);
-   var users = response.users;
-   if (users && users.length > 0) {
-      for (i = 0; i < users.length; i++) {
-         var user = users[i];
-         var email = user.primaryEmail.toString();
-        suspendedusers.push(email);
-        // End looping through suspended users
-      }
-   // End checking there are suspended users
-   }
-
-  
    // Create array just for user emails
    var useremails=[];
 
@@ -59,14 +38,16 @@ function findUsersWithoutGroups(){
    for (var j=0; j<currentyears.length; j++){
       var currentyear=currentyears[j];
       var orgUnitPath='orgUnitPath=/PATH/TO/YOUR/ORGANIZATIONALUNIT' + currentyear;
+      var isSuspended=false;
       // Get all the students
       var optionalArgs = {
          domain: 'YOURDOMAIN.COM',
          maxResults: 500,
          orderBy: 'email'
       };
-      // Push another argument just for the query
+      // Push other arguments for the query
       optionalArgs['query']=orgUnitPath;
+      optionalArgs['query']=isSuspended;
 
       var response = AdminDirectory.Users.list(optionalArgs);
       var users = response.users;
@@ -74,11 +55,6 @@ function findUsersWithoutGroups(){
          for (i = 0; i < users.length; i++) {
             var user = users[i];
             var email = user.primaryEmail.toString();
-           // Double-check it's not a suspended user
-           var userindex=suspendedusers.indexOf(email);
-           if(userindex==-1){
-             useremails.push(email);
-           }
          // End looping through users
          }
 
