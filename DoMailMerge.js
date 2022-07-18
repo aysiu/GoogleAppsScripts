@@ -34,9 +34,6 @@ function do_mail_merge() {
     // Open the new document
     var new_doc = DocumentApp.openById(new_doc_id);
 
-    // Get the body of the document in focus
-    var new_body = new_doc.getActiveSection();
-
     // Loop through the values in the spreadsheet
     for ( j = 0; j < values.length; j++){
         // If it's the first row, get the header names
@@ -49,8 +46,14 @@ function do_mail_merge() {
         // If it's the second or later rows, process the data
         } else {
             Logger.log('Writing old template to new file')
-            // Get the body of the document in focus
+            // Get the body of the old document in focus
             var old_body = old_doc.getActiveSection();
+            /* Get the body of the new document in focus
+            Re-opening and re-saving the new document is terribly inefficient, but
+            in case there's a timeout running the Google Apps Script, we want to have
+            at least an incomplete document instead of a totally empty document
+            */
+            var new_body = new_doc.getActiveSection();
             // This loop adapted from https://stackoverflow.com/a/54818291
             for(var m=0; m<old_body.getNumChildren();m++){
                 //run through the elements of the template doc's Body.
@@ -74,12 +77,11 @@ function do_mail_merge() {
                 new_body.replaceText(header_names[l], values[j][l]);
             // End of making replacements
             }
+            // Close the new doc
+            new_body.saveAndClose;
         // End of processing non-header rows
         }
     // End of looping through all rows of the spreadsheet
     }
-    // Close the new doc
-    new_body.saveAndClose;
 // End of function
 }
-
